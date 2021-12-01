@@ -55,7 +55,9 @@ public class Ebanco_visao extends ReceiverAdapter {
             } else if (line.startsWith("login")) {
                 
             } else if (line.startsWith("cadastro")) {
+                
                 canal.send(new Message(null, null, "teste"));
+                
             } else {
                 System.out.println("Digite uma opcao válida ('login' ou 'cadastro' ou 'sair')");
             }
