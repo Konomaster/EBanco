@@ -10,7 +10,7 @@ package modelo;
  * @author Acer
  */
 
-public class Ebanco_modelo {
+public class EbancoModelo {
 
     /**
      * @param args the command line arguments

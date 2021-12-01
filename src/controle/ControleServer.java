@@ -8,6 +8,7 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.*;
 
+import controle.InterfaceControle;
 /**
  *
  * @author pedro
@@ -33,12 +34,16 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
         } 
         catch (Exception erro) { 
             //DEBUG
-            System.out.println("ERRO: CalculadoraServer " + erro.getMessage()); 
+            System.out.println("ERRO: ControleServer " + erro.getMessage()); 
             erro.printStackTrace(); 
         }
     }
 
-    @Override
+    public ControleServer()throws RemoteException{
+        super();
+    }
+    
+
     public boolean isNomeUnico() throws RemoteException {
         return true;
     }

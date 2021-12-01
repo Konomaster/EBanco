@@ -15,7 +15,7 @@ import java.rmi.server.UnicastRemoteObject;
  *
  * @author Acer
  */
-public class Ebanco_controle extends UnicastRemoteObject{
+public class EbancoControle{
     //extends ReceiverAdapter
     
     private JChannel canal;
@@ -24,7 +24,7 @@ public class Ebanco_controle extends UnicastRemoteObject{
      */
     public static void main(String[] args) throws Exception{
         // TODO code application logic here
-        new Ebanco_controle().start();
+        new EbancoControle().start();
         ControleServer c = new ControleServer();
         c.iniciar();
         
