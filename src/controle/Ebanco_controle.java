@@ -8,11 +8,15 @@ package controle;
 
 import java.util.Scanner;
 import org.jgroups.*;
+
+import java.rmi.*;
+import java.rmi.server.UnicastRemoteObject;
 /**
  *
  * @author Acer
  */
-public class Ebanco_controle extends ReceiverAdapter{
+public class Ebanco_controle extends UnicastRemoteObject{
+    //extends ReceiverAdapter
     
     private JChannel canal;
     /**
@@ -21,46 +25,19 @@ public class Ebanco_controle extends ReceiverAdapter{
     public static void main(String[] args) throws Exception{
         // TODO code application logic here
         new Ebanco_controle().start();
+        ControleServer c = new ControleServer();
+        c.iniciar();
+        
     }
     
     private void start() throws Exception {
         canal = new JChannel();
-        canal.setReceiver(this);
+        //canal.setReceiver(this);
 
         canal.connect("visao_controle");
-        eventLoop();
         canal.close();
-
     }
-    
-    private void eventLoop() throws Exception {
-
-        Scanner teclado = new Scanner(System.in);
-        String line = "";
-
-        System.out.println("*****Bem vindo ao E-Banco_CONTROLE*****");
-        System.out.println("Escreva 'login' para fazer login, 'cadastro' para se cadastrar, ou 'sair' para sair.");
-
-        boolean continua = true;
-        while (continua) {
-
-            System.out.print("> ");
-            System.out.flush();
-
-            line = teclado.nextLine().toLowerCase();
-
-            if (line.startsWith("sair")) {
-                continua = false;
-            } else if (line.startsWith("login")) {
-            } else if (line.startsWith("cadastro")) {
-                canal.send(new Message(null, null, "teste"));
-            } else {
-                System.out.println("Digite uma opcao válida ('login' ou 'cadastro' ou 'sair')");
-            }
-
-        }//while
-    }
-
+  
     public void receive(Message msg) {
         System.out.println(msg.getSrc() + ": " + msg.getObject());
     }
@@ -68,4 +45,7 @@ public class Ebanco_controle extends ReceiverAdapter{
     public void viewAccepted(View new_view) {
         System.out.println("\t\t[DEBUG] ** view: " + new_view);
     }
+
+    
+
 }
