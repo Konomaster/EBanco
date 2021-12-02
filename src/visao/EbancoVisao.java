@@ -5,9 +5,9 @@
  */
 package visao;
 
-import controle.InterfaceControle;
 import java.rmi.Naming;
 import java.util.Scanner;
+import modelo.InterfaceModelo;
 import org.jgroups.*;
 
 /**
@@ -77,7 +77,7 @@ public class EbancoVisao {
                 operacao = "sair";
             }
 
-            InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
+            InterfaceModelo ic = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerControle");
             boolean teste = ic.isNomeUnico();
             if (teste) {
                 System.out.println("Deu certo");

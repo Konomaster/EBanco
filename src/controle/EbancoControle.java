@@ -67,7 +67,4 @@ public class EbancoControle extends ReceiverAdapter implements RequestHandler{
         return null;
         
     }
-
-    
-
 }
