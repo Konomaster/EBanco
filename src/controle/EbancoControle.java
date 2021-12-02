@@ -50,8 +50,6 @@ public class EbancoControle extends ReceiverAdapter implements RequestHandler{
             ControleServer c = new ControleServer();
             c.iniciar();
         }
-        
-
     }
   
     public void receive(Message msg) {
@@ -64,7 +62,10 @@ public class EbancoControle extends ReceiverAdapter implements RequestHandler{
 
     @Override
     public Object handle(Message msg) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //InterfaceModelo ic = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
+        
+        return null;
+        
     }
 
     
