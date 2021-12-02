@@ -11,31 +11,47 @@ import org.jgroups.*;
 
 import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
+import org.jgroups.blocks.MessageDispatcher;
+import org.jgroups.blocks.RequestHandler;
 /**
  *
  * @author Acer
  */
-public class EbancoControle{
-    //extends ReceiverAdapter
+public class EbancoControle extends ReceiverAdapter implements RequestHandler{
+    //
     
     private JChannel canal;
     /**
      * @param args the command line arguments
      */
+    
+    MessageDispatcher  despachante;
+    
     public static void main(String[] args) throws Exception{
         // TODO code application logic here
         new EbancoControle().start();
-        ControleServer c = new ControleServer();
-        c.iniciar();
         
     }
     
     private void start() throws Exception {
         canal = new JChannel();
         //canal.setReceiver(this);
-
-        canal.connect("visao_controle");
+        despachante = new MessageDispatcher(canal, null, null, this);
+        
+        canal.setReceiver(this); // quem irá lidar com as mensagens recebidas
+        canal.connect("controle");
+        eventLoop();
         canal.close();
+    }
+    
+    private void eventLoop() throws RemoteException{
+        Address meuEndereco = canal.getAddress();
+        if(meuEndereco.equals(canal.getView().getMembers().get(0))){
+            ControleServer c = new ControleServer();
+            c.iniciar();
+        }
+        
+
     }
   
     public void receive(Message msg) {
@@ -44,6 +60,11 @@ public class EbancoControle{
     
     public void viewAccepted(View new_view) {
         System.out.println("\t\t[DEBUG] ** view: " + new_view);
+    }
+
+    @Override
+    public Object handle(Message msg) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     
