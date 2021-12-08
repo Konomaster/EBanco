@@ -5,7 +5,6 @@
  */
 package modelo;
 
-
 import java.rmi.RemoteException;
 import org.jgroups.Address;
 import org.jgroups.JChannel;
@@ -20,14 +19,12 @@ import org.jgroups.blocks.RequestHandler;
  * @author Acer
  */
 
+// Ordem de compilação: Modelo, Controle e Visão(MCV) -->>
 public class EbancoModelo extends ReceiverAdapter implements RequestHandler{
 
     private JChannel canal;
-    /**
-     * @param args the command line arguments
-     */
     
-    MessageDispatcher  despachante;
+    MessageDispatcher despachante;
     
     public static void main(String[] args) throws Exception{
         new EbancoModelo().start();
@@ -48,7 +45,7 @@ public class EbancoModelo extends ReceiverAdapter implements RequestHandler{
         Address meuEndereco = canal.getAddress();
         if(meuEndereco.equals(canal.getView().getMembers().get(0))){
             ModeloServer c = new ModeloServer();
-            c.iniciar(this);
+            c.iniciar();
         }
     }
   
@@ -63,9 +60,6 @@ public class EbancoModelo extends ReceiverAdapter implements RequestHandler{
     @Override
     public Object handle(Message msg) throws Exception {
         //InterfaceModelo ic = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
-        
         return null;
-        
     }
-    
 }

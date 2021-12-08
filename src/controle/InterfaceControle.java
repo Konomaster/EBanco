@@ -13,7 +13,9 @@ import java.rmi.*;
  */
 public interface InterfaceControle extends Remote {
     
-    public boolean isNomeUnico() throws RemoteException;
-    
+    public boolean solicitaCriacao(String nome, String senha) throws RemoteException;
+    public int solicitaConsulta(String nome) throws RemoteException;
+    public void solicitaTransferencia() throws RemoteException;
+    public boolean autenticacao(String nome, String senha) throws RemoteException;
     
 }

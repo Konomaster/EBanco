@@ -6,11 +6,8 @@
 
 package controle;
 
-import java.util.Scanner;
 import org.jgroups.*;
-
 import java.rmi.*;
-import java.rmi.server.UnicastRemoteObject;
 import org.jgroups.blocks.MessageDispatcher;
 import org.jgroups.blocks.RequestHandler;
 /**
@@ -18,26 +15,19 @@ import org.jgroups.blocks.RequestHandler;
  * @author Acer
  */
 public class EbancoControle extends ReceiverAdapter implements RequestHandler{
-    //
     
     private JChannel canal;
-    /**
-     * @param args the command line arguments
-     */
-    
+
     MessageDispatcher  despachante;
     
     public static void main(String[] args) throws Exception{
-        // TODO code application logic here
-        new EbancoControle().start();
-        
+        new EbancoControle().start();  
     }
     
     private void start() throws Exception {
         canal = new JChannel();
         //canal.setReceiver(this);
         despachante = new MessageDispatcher(canal, null, null, this);
-        
         canal.setReceiver(this); // quem irá lidar com as mensagens recebidas
         canal.connect("controle");
         eventLoop();
@@ -63,8 +53,6 @@ public class EbancoControle extends ReceiverAdapter implements RequestHandler{
     @Override
     public Object handle(Message msg) throws Exception {
         //InterfaceModelo ic = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
-        
         return null;
-        
     }
 }

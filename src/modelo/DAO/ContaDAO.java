@@ -14,17 +14,19 @@ import modelo.Beans.Conta;
  */
 public class ContaDAO {
     
-    ArrayList<Conta> lista = new ArrayList();
+    public ArrayList<Conta> lista = new ArrayList();
     
-    public int salvar(String nome, int id, String senha){//CREATE
-        Conta c = new Conta(nome,id,senha);
+    public boolean salvar(String nome, String senha){//CREATE
+        Conta c = new Conta(nome,senha);
         try{
             lista.add(c);
-            return 1;
+            int id = lista.indexOf(c);
+            c.setId(id);
         }catch(Exception e){
             e.printStackTrace();
-            return 0;
+            return false;
         }
+        return true;
     }
     
     public ArrayList<Conta> ler(){//READ
@@ -54,7 +56,7 @@ public class ContaDAO {
         return 0;
     }
     
-    public int deletar(int id){//DELETE
+    /*public int deletar(int id){//DELETE
         for (int i = 0; i < lista.size(); i++) {
             if(lista.get(i).getId() == id){
                 lista.remove(i);
@@ -62,5 +64,15 @@ public class ContaDAO {
             }
         }
         return 0;
+    }*/
+    
+    public int pesquisar(String nome){
+        
+        for(int i = 0; i < lista.size(); i++){
+            if(nome.equals(lista.get(i).getNome())){
+                return lista.get(i).getId();
+            }
+        }
+        return -1;
     }
 }

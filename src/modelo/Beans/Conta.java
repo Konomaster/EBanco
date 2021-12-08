@@ -14,9 +14,9 @@ public class Conta {
     String senha;
     int saldo = 0;
     
-    public Conta(String nome, int id, String senha) {
+    public Conta(String nome, String senha) {
         this.nome = nome;
-        this.id = id;
+        this.id = -1;
         this.senha = senha;
         this.saldo = 1000;
     }

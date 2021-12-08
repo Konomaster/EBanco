@@ -14,7 +14,9 @@ import java.rmi.RemoteException;
  */
 public interface InterfaceModelo extends Remote {
     
-    public boolean isNomeUnico() throws RemoteException;
-    
+    public boolean isNomeUnico(String nome) throws RemoteException;//Objeto string como parâmetro
+    public boolean criarConta(String nome, String senha) throws RemoteException;
+    public int retornaSaldo(String nome) throws RemoteException;
+    public boolean verifica(String nome, String senha)throws RemoteException;
     
 }
