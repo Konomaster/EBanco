@@ -26,15 +26,15 @@ public class ModeloServer extends UnicastRemoteObject implements InterfaceModelo
         contadao = new ContaDAO();
     }
     
-    public static void main(String[] args){
-        ModeloServer newModelo;
-        try {
-            newModelo = new ModeloServer();
-            newModelo.iniciar();
-        } catch (RemoteException ex) {
-            Logger.getLogger(ControleServer.class.getName()).log(Level.SEVERE, null, ex);
-        }  
-    }
+//    public static void main(String[] args){
+//        ModeloServer newModelo;
+//        try {
+//            newModelo = new ModeloServer();
+//            newModelo.iniciar();
+//        } catch (RemoteException ex) {
+//            Logger.getLogger(ControleServer.class.getName()).log(Level.SEVERE, null, ex);
+//        }  
+//    }
       
     public void iniciar(){
         
