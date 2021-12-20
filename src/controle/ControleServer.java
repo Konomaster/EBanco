@@ -9,12 +9,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelo.InterfaceModelo;
 
-public class ControleServer extends UnicastRemoteObject implements InterfaceControle{
-    
-    public ControleServer()throws RemoteException{
+public class ControleServer extends UnicastRemoteObject implements InterfaceControle {
+
+    public ControleServer() throws RemoteException {
         super();
     }
-    
+
 //    public static void main(String[] args){
 //        ControleServer newControle;
 //        try {
@@ -24,33 +24,30 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
 //            Logger.getLogger(ControleServer.class.getName()).log(Level.SEVERE, null, ex);
 //        }  
 //    }
-    
-    public void iniciar(){
-        try { 
+    public void iniciar() {
+        try {
             // Cria um objeto do tipo da classe CalculadoraServer. 
-            ControleServer obj = new ControleServer(); 
+            ControleServer obj = new ControleServer();
 
             // Liga (bind) esta instancia de objeto ao nome "Calculadora" no registro RMI no localhost
             //Naming.rebind("Calculadora", obj); // isto equivale ao comando completo abaixo:
-            Naming.rebind("rmi://localhost/ServerControle", obj); 
+            Naming.rebind("rmi://localhost/ServerControle", obj);
 
             // Liga (bind) esta instancia de objeto ao nome "Calculadora" em um registro RMI contido em outra máquina
             //Naming.rebind("rmi://172.16.2.222:1099/Calculadora", obj); 
-
             //DEBUG
-            System.out.println("Server >> ligado no registro RMI sob o nome ServerControle"); 
+            System.out.println("Server >> ligado no registro RMI sob o nome ServerControle");
 
-        } 
-        catch (Exception erro) { 
+        } catch (Exception erro) {
             //DEBUG
-            System.out.println("ERRO: ControleServer " + erro.getMessage()); 
-            erro.printStackTrace(); 
+            System.out.println("ERRO: ControleServer " + erro.getMessage());
+            erro.printStackTrace();
         }
     }
-    
-    public boolean solicitaCriacao(String nome, String senha) throws RemoteException{
-        
-        try{
+
+    public boolean solicitaCriacao(String nome, String senha) throws RemoteException {
+
+        try {
             InterfaceModelo im = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
             boolean verificaConta = im.isNomeUnico(nome);//receba parametros
             if (verificaConta) {
@@ -60,9 +57,9 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
             } else {
                 System.out.println("Esse nome já existe");
             }
-        }catch(Exception erro){
+        } catch (Exception erro) {
             //DEBUG
-            System.out.println("ERRO: ControleServer " + erro.getMessage()); 
+            System.out.println("ERRO: ControleServer " + erro.getMessage());
             erro.printStackTrace();
         }
         return false;
@@ -77,7 +74,7 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
             return saldo;
         } catch (NotBoundException | MalformedURLException ex) {
             Logger.getLogger(ControleServer.class.getName()).log(Level.SEVERE, null, ex);
-        } 
+        }
         return 0;
     }
 
@@ -91,11 +88,24 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
         try {
             boolean confere;
             InterfaceModelo ic = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
-            confere = ic.verifica(nome,senha);
+            confere = ic.verifica(nome, senha);
             return confere;
         } catch (NotBoundException | MalformedURLException ex) {
             Logger.getLogger(ControleServer.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
+    }
+
+    public boolean login(String id, String senha) throws RemoteException {
+        if (id.equals("1")) {
+            return true;
+        }
+        return false;
+
+    }
+
+    public String consultaNome(String id) throws RemoteException {
+        return "Teste";
+
     }
 }
