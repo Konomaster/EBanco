@@ -36,7 +36,7 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
             // Liga (bind) esta instancia de objeto ao nome "Calculadora" em um registro RMI contido em outra máquina
             //Naming.rebind("rmi://172.16.2.222:1099/Calculadora", obj); 
             //DEBUG
-            System.out.println("Server >> ligado no registro RMI sob o nome ServerControle");
+            System.out.println("Controle >> ligado no registro RMI sob o nome ServerControle");
 
         } catch (Exception erro) {
             //DEBUG

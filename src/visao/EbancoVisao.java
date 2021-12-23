@@ -37,7 +37,7 @@ public class EbancoVisao {
         teclado = new Scanner(System.in);
         String line = "";
 
-        System.out.println("*****Bem vindo ao E-Banco_CONTROLE*****");
+        System.out.println("*****Bem vindo ao E-Banco*****");
         System.out.println("Escreva 'login' para fazer login, 'cadastro' para se cadastrar, ou 'sair' para sair.");
 
         boolean continua = true;
@@ -67,7 +67,7 @@ public class EbancoVisao {
         System.out.println("Voce pode digitar 'sair' a qualquer momento para "
                 + "cancelar o cadastro e voltar ao menu inicial.");
         String operacao = "";
-        int idConta = -1;
+        String idConta = "-1";
 
         while (!operacao.equals("sair") && !operacao.equals("concluido") && !operacao.equals("falha")) {
             System.out.println("Por gentileza, insira seu nome: ");
@@ -118,7 +118,7 @@ public class EbancoVisao {
                 if (opResult) {
 
                     operacao = "concluido";
-                    idConta = 0000;
+                    idConta = "0000";
                 } else {
                     operacao = "falha";
                 }
@@ -250,7 +250,10 @@ public class EbancoVisao {
             } else if (opcao.equals("saldo")) {
 
             } else if (opcao.equals("transferencia")) {
+                transferencia(idConta);
             } else if (opcao.equals("extrato")) {
+            } else {
+                System.out.println("Digite uma opcao valida, 'saldo', 'transferencia', 'extrato' ou 'sair'");
             }
         }
 
@@ -258,6 +261,59 @@ public class EbancoVisao {
 
     private void saldo(String idConta) throws Exception {
         InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
+    }
+
+    private void extrato(String idConta) throws Exception {
+        InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
+        System.out.println("Exibindo historico total de operacoes para a conta: " + idConta);
+        System.out.println("Titular: ");
+    }
+
+    private void transferencia(String idConta) {
+        String contaRemetente = idConta;
+        String contaDestino = "";
+
+        System.out.println("Para realizar transferencias voce precisara informar o numero identificador unico da conta destino.");
+        System.out.println("Voce sabe o identificador unico da conta destino ou gostaria de descobri-lo fazendo uma pesquisa pelo nome do titular? ");
+        System.out.println("Responda 'sim', 'nao' ou qualquer outra coisa para cancelar a operacao de transferencia");
+        String op = teclado.nextLine().toLowerCase();
+
+        if (op.equals("sim")) {
+        } else if (op.equals("nao")) {
+        } else {
+            System.out.println("Cancelando operacao de transferencia.");
+        }
+
+        System.out.println("Digite o identificador unico da conta destino.");
+        contaDestino = teclado.nextLine();
+
+        if (contaDestino.equals("sair")) {
+            System.out.println("Voltando ao menu de cliente logado.");
+            System.out.println("Digite uma opcao: 'saldo', 'transferencia', 'extrato' ou 'sair'.");
+        }
+
+        if (!idValido(contaDestino)) {
+            System.out.println("Identificador unico informado eh invalido.");
+            System.out.println("Cancelando opcao de transferencia e voltando ao menu.");
+        }
+
+        System.out.println("Agora digite a quantidade de dinheiro a ser transferida: ");
+        String quantidade = teclado.nextLine();
+
+        if (!doubleValido(quantidade)) {
+            System.out.println("Entrada informada nao corresponde a valor ");
+            System.out.println("Cancelando opcao de transferencia e voltando ao menu.");
+        }
+    }
+
+    private void buscaId() {
+
+        System.out.println("Digite o nome do titular da conta parcialmente ou todo: ");
+        String stringdebusca = teclado.nextLine().toLowerCase();
+        System.out.println("Resultado da busca: ");
+        //ArrayList<String> resultado=
+        System.out.println("Continuando com processo de transferencia...");
+
     }
 
     public void receive(Message msg) {
@@ -301,6 +357,17 @@ public class EbancoVisao {
                 retorno = false;
                 break;
             }
+        }
+        return retorno;
+    }
+
+    public boolean doubleValido(String quantidade) {
+        boolean retorno=false;
+        try {
+            double dbl=Double.parseDouble(quantidade);
+            retorno=true;
+        } catch (Exception e) {
+
         }
         return retorno;
     }
