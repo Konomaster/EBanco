@@ -3,3 +3,5 @@ com que esses registros sejam atualizados nas contas antes de qualquer outra ope
 
 Olhar com Everthon como fazer o requisito acima caso acontecer de ao fazer o registro em uma conta 
 da mesma operacao, o sistema falhar antes de fazer o registro na outra conta
+
+Beans de Conta adicionar estrutura de dados para o log de atividades
