@@ -5,9 +5,12 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.*;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelo.InterfaceModelo;
+
 
 public class ControleServer extends UnicastRemoteObject implements InterfaceControle {
 
@@ -107,5 +110,17 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
     public String consultaNome(String id) throws RemoteException {
         return "Teste";
 
+    }
+    
+    public int transfereSaldo(String remetente,String destino,double saldo) throws RemoteException{
+        GregorianCalendar gc= new GregorianCalendar();
+        Date dataOp=gc.getTime();
+        int retorno =0;
+        if(destino.equals("0000")){
+            retorno=0;
+        }else if(destino.equals("1111")){
+            retorno=1;
+        }
+        return retorno;
     }
 }

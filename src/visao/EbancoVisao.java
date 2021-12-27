@@ -269,7 +269,7 @@ public class EbancoVisao {
         System.out.println("Titular: ");
     }
 
-    private void transferencia(String idConta) {
+    private void transferencia(String idConta) throws Exception {
         String contaRemetente = idConta;
         String contaDestino = "";
 
@@ -282,6 +282,8 @@ public class EbancoVisao {
         } else if (op.equals("nao")) {
         } else {
             System.out.println("Cancelando operacao de transferencia.");
+            System.out.println("Voltando ao menu de cliente logado.");
+            System.out.println("Digite uma opcao: 'saldo', 'transferencia', 'extrato' ou 'sair'.");
         }
 
         System.out.println("Digite o identificador unico da conta destino.");
@@ -290,20 +292,42 @@ public class EbancoVisao {
         if (contaDestino.equals("sair")) {
             System.out.println("Voltando ao menu de cliente logado.");
             System.out.println("Digite uma opcao: 'saldo', 'transferencia', 'extrato' ou 'sair'.");
+            return;
         }
 
         if (!idValido(contaDestino)) {
             System.out.println("Identificador unico informado eh invalido.");
             System.out.println("Cancelando opcao de transferencia e voltando ao menu.");
+            System.out.println("Digite uma opcao: 'saldo', 'transferencia', 'extrato' ou 'sair'.");
+            return;
         }
 
         System.out.println("Agora digite a quantidade de dinheiro a ser transferida: ");
         String quantidade = teclado.nextLine();
 
         if (!doubleValido(quantidade)) {
-            System.out.println("Entrada informada nao corresponde a valor ");
+            System.out.println("Entrada informada nao corresponde a valor valido.");
             System.out.println("Cancelando opcao de transferencia e voltando ao menu.");
+            System.out.println("Digite uma opcao: 'saldo', 'transferencia', 'extrato' ou 'sair'.");
+            return;
         }
+        
+        double dblQuantidade=Double.parseDouble(quantidade);
+
+        System.out.println("Efetuando transferencia...");
+        InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
+        int retornoOp = ic.transfereSaldo(contaRemetente, contaDestino, dblQuantidade);
+        if (retornoOp == 0) {
+            System.out.println("Transferencia de saldo concluida com sucesso.");
+            System.out.println("Voltando ao menu de cliente logado.");
+            System.out.println("Digite uma opcao: 'saldo', 'transferencia', 'extrato' ou 'sair'.");
+        } else if (retornoOp == 1) {
+            System.out.println("FALHA: Transferencia nao pode ser executada.");
+            System.out.println("Tente novamente em alguns instantes.");
+            System.out.println("Voltando ao menu de cliente logado.");
+            System.out.println("Digite uma opcao: 'saldo', 'transferencia', 'extrato' ou 'sair'.");
+        }
+
     }
 
     private void buscaId() {
@@ -362,10 +386,10 @@ public class EbancoVisao {
     }
 
     public boolean doubleValido(String quantidade) {
-        boolean retorno=false;
+        boolean retorno = false;
         try {
-            double dbl=Double.parseDouble(quantidade);
-            retorno=true;
+            double dbl = Double.parseDouble(quantidade);
+            retorno = true;
         } catch (Exception e) {
 
         }
