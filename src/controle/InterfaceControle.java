@@ -5,6 +5,8 @@
 package controle;
 
 import java.rmi.*;
+import java.util.ArrayList;
+import modelo.Beans.Conta;
 
 
 /**
@@ -13,9 +15,9 @@ import java.rmi.*;
  */
 public interface InterfaceControle extends Remote {
     
-    public boolean solicitaCriacao(String nome, String senha) throws RemoteException;
+    public Conta solicitaCriacao(String nome, String senha) throws RemoteException;
     public int solicitaConsulta(String nome) throws RemoteException;
-    public void solicitaTransferencia() throws RemoteException;
+    public ArrayList<String> solicitaTransferencia(boolean flag, int id) throws RemoteException;
     public boolean autenticacao(String nome, String senha) throws RemoteException;
     public boolean login(String id, String senha) throws RemoteException;
     public String consultaNome(String id) throws RemoteException;

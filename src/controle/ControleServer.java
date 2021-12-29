@@ -5,10 +5,12 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import modelo.Beans.Conta;
 import modelo.InterfaceModelo;
 
 
@@ -48,24 +50,30 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
         }
     }
 
-    public boolean solicitaCriacao(String nome, String senha) throws RemoteException {
-
+    public Conta solicitaCriacao(String nome, String senha) throws RemoteException {
+        
+        Conta resultado;
         try {
             InterfaceModelo im = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
             boolean verificaConta = im.isNomeUnico(nome);//receba parametros
+            
             if (verificaConta) {
                 //digitar informações e passa-la por parametro, nome e senha - id gera depois
-                boolean resultado = im.criarConta(nome, senha);
+                resultado = im.criarConta(nome, senha);
                 return resultado;
             } else {
-                System.out.println("Esse nome já existe");
+                resultado = new Conta();
+                resultado.setId(-1);
+                //System.out.println("Esse nome já existe");
+                return resultado;
+                
             }
         } catch (Exception erro) {
             //DEBUG
             System.out.println("ERRO: ControleServer " + erro.getMessage());
             erro.printStackTrace();
         }
-        return false;
+        return null;
     }
 
     @Override
@@ -82,8 +90,19 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
     }
 
     @Override
-    public void solicitaTransferencia() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ArrayList<String> solicitaTransferencia(boolean flag, int id) throws RemoteException {
+        // Filtrar se serão retornadas 5 ou length total das transferencias
+        try {
+            
+            InterfaceModelo ic = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
+            return ic.retornoExtrato(flag, id);
+            
+        } catch (NotBoundException ex) {
+            Logger.getLogger(ControleServer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(ControleServer.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
     @Override

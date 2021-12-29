@@ -7,6 +7,8 @@ package modelo;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
+import modelo.Beans.Conta;
 
 /**
  *
@@ -15,8 +17,9 @@ import java.rmi.RemoteException;
 public interface InterfaceModelo extends Remote {
     
     public boolean isNomeUnico(String nome) throws RemoteException;//Objeto string como parâmetro
-    public boolean criarConta(String nome, String senha) throws RemoteException;
+    public Conta criarConta(String nome, String senha) throws RemoteException;
     public int retornaSaldo(String nome) throws RemoteException;
     public boolean verifica(String nome, String senha)throws RemoteException;
+    public ArrayList<String> retornoExtrato(boolean flag, int id)throws RemoteException;
     
 }

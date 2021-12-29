@@ -5,12 +5,11 @@
  */
 package modelo;
 
-import controle.ControleServer;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import modelo.Beans.Conta;
 import modelo.DAO.ContaDAO;
 
 /*
@@ -60,7 +59,7 @@ public class ModeloServer extends UnicastRemoteObject implements InterfaceModelo
         }
     }
     
-    public boolean criarConta(String nome, String senha) throws RemoteException{
+    public Conta criarConta(String nome, String senha) throws RemoteException{
         return this.contadao.salvar(nome,senha);
     }
     
@@ -74,11 +73,11 @@ public class ModeloServer extends UnicastRemoteObject implements InterfaceModelo
         }
     }
 
-    @Override
-    public int retornaSaldo(String nome) throws RemoteException {
+    public int retornaSaldo(int id) throws RemoteException {
+        
         int saldo = 0;
         for(int i = 0; i < contadao.lista.size(); i++){
-            if(contadao.lista.get(i).getNome().equals(nome)){
+            if(contadao.lista.get(i).getId() == id){
                 saldo = contadao.lista.get(i).getSaldo();
             }
         }
@@ -93,6 +92,11 @@ public class ModeloServer extends UnicastRemoteObject implements InterfaceModelo
             }
         }
         return false;
+    }
+
+    @Override
+    public int retornaSaldo(String nome) throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     

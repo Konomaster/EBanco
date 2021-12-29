@@ -16,7 +16,8 @@ public class ContaDAO {
     
     public ArrayList<Conta> lista = new ArrayList();
     
-    public boolean salvar(String nome, String senha){//CREATE
+    public Conta salvar(String nome, String senha){//CREATE
+        
         Conta c = new Conta(nome,senha);
         try{
             lista.add(c);
@@ -24,9 +25,9 @@ public class ContaDAO {
             c.setId(id);
         }catch(Exception e){
             e.printStackTrace();
-            return false;
+            return c;
         }
-        return true;
+        return c;
     }
     
     public ArrayList<Conta> ler(){//READ

@@ -114,7 +114,7 @@ public class EbancoVisao {
                 }
 
                 InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
-                boolean opResult = ic.solicitaCriacao(nomeConta, senhaConta);
+                //boolean opResult = ic.solicitaCriacao(nomeConta, senhaConta);
                 if (opResult) {
 
                     operacao = "concluido";
