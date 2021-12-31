@@ -21,5 +21,6 @@ public interface InterfaceModelo extends Remote {
     public int retornaSaldo(String nome) throws RemoteException;
     public boolean verifica(String nome, String senha)throws RemoteException;
     public ArrayList<String> retornoExtrato(boolean flag, int id)throws RemoteException;
+    public String transfereSaldo(String remetente, String destino, double saldo, String data) throws RemoteException;
     
 }
