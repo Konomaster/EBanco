@@ -99,5 +99,11 @@ public class ModeloServer extends UnicastRemoteObject implements InterfaceModelo
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    
+    public ArrayList<String> retornoExtrato(boolean flag, int id)throws RemoteException{
+        ArrayList<String> retorno=new ArrayList<String>();
+        if(contadao.lista.size()>0 && contadao.ler(id).getId()==id){
+            retorno=contadao.ler(id).getMovimentacoes(flag, id);
+        }
+        return retorno;
+    }
 }

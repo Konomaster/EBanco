@@ -13,7 +13,6 @@ import java.util.logging.Logger;
 import modelo.Beans.Conta;
 import modelo.InterfaceModelo;
 
-
 public class ControleServer extends UnicastRemoteObject implements InterfaceControle {
 
     public ControleServer() throws RemoteException {
@@ -51,12 +50,12 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
     }
 
     public Conta solicitaCriacao(String nome, String senha) throws RemoteException {
-        
+
         Conta resultado;
         try {
             InterfaceModelo im = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
             boolean verificaConta = im.isNomeUnico(nome);//receba parametros
-            
+
             if (verificaConta) {
                 //digitar informações e passa-la por parametro, nome e senha - id gera depois
                 resultado = im.criarConta(nome, senha);
@@ -66,7 +65,7 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
                 resultado.setId(-1);
                 //System.out.println("Esse nome já existe");
                 return resultado;
-                
+
             }
         } catch (Exception erro) {
             //DEBUG
@@ -90,13 +89,13 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
     }
 
     @Override
-    public ArrayList<String> solicitaTransferencia(boolean flag, int id) throws RemoteException {
+    public ArrayList<String> solicitaExtrato(boolean flag, int id) throws RemoteException {
         // Filtrar se serão retornadas 5 ou length total das transferencias
         try {
-            
+
             InterfaceModelo ic = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
             return ic.retornoExtrato(flag, id);
-            
+
         } catch (NotBoundException ex) {
             Logger.getLogger(ControleServer.class.getName()).log(Level.SEVERE, null, ex);
         } catch (MalformedURLException ex) {
@@ -130,15 +129,25 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
         return "Teste";
 
     }
-    
-    public int transfereSaldo(String remetente,String destino,double saldo) throws RemoteException{
-        GregorianCalendar gc= new GregorianCalendar();
-        Date dataOp=gc.getTime();
-        int retorno =0;
-        if(destino.equals("0000")){
-            retorno=0;
-        }else if(destino.equals("1111")){
-            retorno=1;
+
+    public int transfereSaldo(String remetente, String destino, double saldo) throws RemoteException {
+        GregorianCalendar gc = new GregorianCalendar();
+        Date dataOp = gc.getTime();
+        int retorno = 0;
+
+        try {
+            InterfaceModelo ic = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
+            
+            ic.transfereSaldo(remetente,destino, saldo, dataOp.toString())
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        
+        if (destino.equals("0000")) {
+            retorno = 0;
+        } else if (destino.equals("1111")) {
+            retorno = 1;
         }
         return retorno;
     }
