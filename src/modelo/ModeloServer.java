@@ -115,12 +115,12 @@ public class ModeloServer extends UnicastRemoteObject implements InterfaceModelo
         for(int i = 0; i < 2 ; i++){
             
             for(int j = 0; j < contadao.lista.size(); j++){
-                if(contadao.lista.get(j).getNome().equals(remetente)){
+                if(contadao.lista.get(j).getId()==Integer.parseInt(destino)){
 
                     conta1 = contadao.lista.get(j);
 
                 }
-                else if(contadao.lista.get(j).getNome().equals(remetente)){
+                else if(contadao.lista.get(j).getId()==Integer.parseInt(remetente)){
                     conta2 = contadao.lista.get(j);
                 }
             }
@@ -129,8 +129,8 @@ public class ModeloServer extends UnicastRemoteObject implements InterfaceModelo
         conta1.setSaldo(conta1.getSaldo() + saldo);
         conta2.setSaldo(conta1.getSaldo() - saldo);
         
-        comprovante1 = "Enviado\nDia "+data+":\n De: "+remetente+"\n"+"Para:"+destino+"\nValor: "+saldo;
-        comprovante2 = "Recebido\nDia "+data+":\n De: "+remetente+"\n"+"Para:"+destino+"\nValor: "+saldo;
+        comprovante1 = "****\nRecebido\nDia "+data+":\n De: "+remetente+"\n"+"Para:"+destino+"\nValor: "+saldo;
+        comprovante2 = "****\nEnviado\nDia "+data+":\n De: "+remetente+"\n"+"Para:"+destino+"\nValor: "+saldo;
         
         conta1.setMovimentacoes(comprovante1);
         conta2.setMovimentacoes(comprovante2);

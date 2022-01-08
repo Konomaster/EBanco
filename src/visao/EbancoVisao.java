@@ -7,6 +7,7 @@ package visao;
 
 import controle.InterfaceControle;
 import java.rmi.Naming;
+import java.util.ArrayList;
 import java.util.Scanner;
 import org.jgroups.*;
 
@@ -54,6 +55,8 @@ public class EbancoVisao {
                 login();
             } else if (line.startsWith("cadastro")) {
                 cadastro();
+            } else if (line.startsWith("montante")) {
+
             } else {
                 System.out.println("Digite uma opcao válida ('login' ou 'cadastro' ou 'sair').");
             }
@@ -115,7 +118,7 @@ public class EbancoVisao {
 
                 InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
                 int codResult = ic.solicitaCriacao(nomeConta, senhaConta).getId();
-                if (codResult>-1) {
+                if (codResult > -1) {
 
                     operacao = "concluido";
                     idConta = String.valueOf(codResult);
@@ -252,6 +255,7 @@ public class EbancoVisao {
             } else if (opcao.equals("transferencia")) {
                 transferencia(idConta);
             } else if (opcao.equals("extrato")) {
+                extrato(idConta);
             } else {
                 System.out.println("Digite uma opcao valida, 'saldo', 'transferencia', 'extrato' ou 'sair'");
             }
@@ -264,9 +268,52 @@ public class EbancoVisao {
     }
 
     private void extrato(String idConta) throws Exception {
-        InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
-        System.out.println("Exibindo historico total de operacoes para a conta: " + idConta);
-        System.out.println("Titular: ");
+        String opcao = "";
+
+        System.out.println("Voce deseja obter o historico parcial ou o historico total?");
+        System.out.println("Digite 'total' ou 'parcial'.");
+        opcao = teclado.nextLine().toLowerCase();
+
+        if (opcao.equals("sair")) {
+            System.out.println("Cancelando operacao de extrato.");
+            System.out.println("Voltando ao menu de cliente logado.");
+            System.out.println("Digite uma opcao: 'saldo', 'transferencia', 'extrato' ou 'sair'.");
+            return;
+        } else if (opcao.equals("total")) {
+            InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
+            ArrayList<String> resposta = ic.solicitaExtrato(false, Integer.parseInt(idConta));
+            System.out.println("Exibindo historico total de operacoes para a conta: " + idConta);
+            System.out.println("Titular: ");
+
+            if (resposta.size() == 0) {
+                System.out.println("Ainda nao existem movimentacoes na sua conta");
+            } else {
+                for (String s : resposta) {
+                    System.out.println(s);
+                }
+            }
+
+            System.out.println("****\nSaldo atual: ");
+
+        } else if (opcao.equals("parcial")) {
+            InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
+            ArrayList<String> resposta = ic.solicitaExtrato(true, Integer.parseInt(idConta));
+            System.out.println("Exibindo historico parcial de operacoes para a conta: " + idConta);
+            System.out.println("Titular: ");
+
+            if (resposta.size() == 0) {
+                System.out.println("Ainda nao existem movimentacoes na sua conta");
+            } else {
+                for (String s : resposta) {
+                    System.out.println(s);
+                }
+            }
+
+            System.out.println("****\nSaldo atual: ");
+        }
+
+        System.out.println("Voltando ao menu de cliente logado.");
+        System.out.println("Digite uma opcao: 'saldo', 'transferencia', 'extrato' ou 'sair'.");
     }
 
     private void transferencia(String idConta) throws Exception {
@@ -280,10 +327,14 @@ public class EbancoVisao {
 
         if (op.equals("sim")) {
         } else if (op.equals("nao")) {
+            if (buscaId() == 1) {
+                return;
+            }
         } else {
             System.out.println("Cancelando operacao de transferencia.");
             System.out.println("Voltando ao menu de cliente logado.");
             System.out.println("Digite uma opcao: 'saldo', 'transferencia', 'extrato' ou 'sair'.");
+            return;
         }
 
         System.out.println("Digite o identificador unico da conta destino.");
@@ -311,8 +362,8 @@ public class EbancoVisao {
             System.out.println("Digite uma opcao: 'saldo', 'transferencia', 'extrato' ou 'sair'.");
             return;
         }
-        
-        double dblQuantidade=Double.parseDouble(quantidade);
+
+        double dblQuantidade = Double.parseDouble(quantidade);
 
         System.out.println("Efetuando transferencia...");
         InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
@@ -330,14 +381,26 @@ public class EbancoVisao {
 
     }
 
-    private void buscaId() {
+    private int buscaId() throws Exception {
 
+        System.out.println("********");
+        System.out.println("Iniciando procedimento de descoberta de identificador de conta atraves do nome do titular.");
         System.out.println("Digite o nome do titular da conta parcialmente ou todo: ");
         String stringdebusca = teclado.nextLine().toLowerCase();
+
+        if (stringdebusca.equals("sair")) {
+            System.out.println("Cancelando operacao de descoberta de identificador de conta.");
+            System.out.println("Cancelando operacao de transferencia.");
+            System.out.println("Voltando ao menu de cliente logado.");
+            System.out.println("Digite uma opcao: 'saldo', 'transferencia', 'extrato' ou 'sair'.");
+            return 1;
+        }
+
         System.out.println("Resultado da busca: ");
+        InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
         //ArrayList<String> resultado=
         System.out.println("Continuando com processo de transferencia...");
-
+        return 0;
     }
 
     public void receive(Message msg) {

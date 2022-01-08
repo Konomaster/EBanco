@@ -7,3 +7,21 @@ da mesma operacao, o sistema falhar antes de fazer o registro na outra conta
 Beans de Conta adicionar estrutura de dados para o log de atividades - Feito
 
 Nome da funcao de solicitarExtrato no InterfaceControle ta como "solicitaTransferencia" - Feito
+
+pendencia do ID unico
+
+verificar se tem saldo disponivel antes de fazer transferencia
+
+mudar funcao de login no controle
+
+ver se com nome igual deixa cadastrar - Feito
+
+Mudar funcao verifica (modelo) para verificar por id
+
+mudar funcao retornaSaldo (modelo) para retornar por id e retornar double (nao int)
+
+fazer extrato e listagem por nome na transferencia
+
+adicionar try-catches no visao aonde chama por RMI para quando falhar nao travar tudo
+
+mudar onde faz o bind pro metodo view accepted

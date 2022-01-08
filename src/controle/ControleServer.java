@@ -77,32 +77,31 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
 
     @Override
     public double solicitaConsulta(String nome) throws RemoteException {
+        double saldo = -1;
         try {
-            double saldo;
+
             InterfaceModelo ic = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
             saldo = ic.retornaSaldo(nome);
-            
-            return saldo;
+
         } catch (NotBoundException | MalformedURLException ex) {
             Logger.getLogger(ControleServer.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return 0;
+        return saldo;
     }
 
     @Override
     public ArrayList<String> solicitaExtrato(boolean flag, int id) throws RemoteException {
         // Filtrar se serão retornadas 5 ou length total das transferencias
+        ArrayList<String> retorno = new ArrayList<String>();
         try {
 
             InterfaceModelo ic = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
-            return ic.retornoExtrato(flag, id);
+            retorno = ic.retornoExtrato(flag, id);
 
-        } catch (NotBoundException ex) {
-            Logger.getLogger(ControleServer.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(ControleServer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+
         }
-        return null;
+        return retorno;
     }
 
     @Override
@@ -132,26 +131,36 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
     }
 
     public int transfereSaldo(String remetente, String destino, double saldo) throws RemoteException {
-        
+
         GregorianCalendar gc = new GregorianCalendar();
         Date dataOp = gc.getTime();
         int retorno = 0;
         String resultado = "";
 
+        if (!remetente.equals(destino)) {
+
+            try {
+                InterfaceModelo im = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
+
+                resultado = im.transfereSaldo(remetente, destino, saldo, dataOp.toString());
+
+            } catch (Exception e) {
+                retorno = 1;
+            }
+        }
+        return retorno;
+    }
+
+    //quando tiver jgroups tem que retornar o montante visto por todos os membros
+    //do cluster de modelo
+    public String montante() throws RemoteException {
+        String retorno = "";
         try {
             InterfaceModelo im = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
-            
-            resultado = im.transfereSaldo(remetente, destino, saldo, dataOp.toString());
-                    
+
+            //retorno= im.montante();
         } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
-        
-        if (destino.equals("0000")) {
-            retorno = 0;
-        } else if (destino.equals("1111")) {
-            retorno = 1;
+
         }
         return retorno;
     }
