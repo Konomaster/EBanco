@@ -86,9 +86,9 @@ public class ModeloServer extends UnicastRemoteObject implements InterfaceModelo
     }
 
     @Override
-    public boolean verifica(String nome, String senha) throws RemoteException {
+    public boolean verifica(int id, String senha) throws RemoteException {
         for(int i = 0; i < contadao.lista.size(); i++){
-            if(contadao.lista.get(i).getNome().equals(nome) && contadao.lista.get(i).getSenha().equals(senha)){
+            if(contadao.lista.get(i).getId() == id && contadao.lista.get(i).getSenha().equals(senha)){
                return true;
             }
         }
@@ -104,43 +104,41 @@ public class ModeloServer extends UnicastRemoteObject implements InterfaceModelo
         return retorno;
     }
     
-    public String transfereSaldo(String remetente, String destino, double saldo, String data) throws RemoteException{
+    public int transfereSaldo(String remetente, String destino, double saldo, String data) throws RemoteException{
         
     // Transferir dinheiro, e guardar String de movimentação em ambas as contas
-    
-        Conta conta1 = null, conta2 = null;
-        String comprovante1 = "";
-        String comprovante2 = "";
         
-        for(int i = 0; i < 2 ; i++){
-            
-            for(int j = 0; j < contadao.lista.size(); j++){
-                if(contadao.lista.get(j).getId()==Integer.parseInt(destino)){
+        try{
+            Conta conta1 = null, conta2 = null;
+            String comprovante1 = "";
+            String comprovante2 = "";
 
-                    conta1 = contadao.lista.get(j);
+            for(int i = 0; i < 2 ; i++){
 
-                }
-                else if(contadao.lista.get(j).getId()==Integer.parseInt(remetente)){
-                    conta2 = contadao.lista.get(j);
+                for(int j = 0; j < contadao.lista.size(); j++){
+
+                    if(contadao.lista.get(j).getId() == Integer.parseInt(destino)){
+                        conta1 = contadao.lista.get(j);
+                    }
+                    else if(contadao.lista.get(j).getId() == Integer.parseInt(remetente)){
+                        conta2 = contadao.lista.get(j);
+                    }
                 }
             }
+
+            conta1.setSaldo(conta1.getSaldo() + saldo);
+            conta2.setSaldo(conta1.getSaldo() - saldo);
+
+            comprovante1 = "****\nRecebido\nDia "+data+":\n De: "+remetente+"\n"+"Para:"+destino+"\nValor: "+saldo;
+            comprovante2 = "****\nEnviado\nDia "+data+":\n De: "+remetente+"\n"+"Para:"+destino+"\nValor: "+saldo;
+
+            conta1.setMovimentacoes(comprovante1);
+            conta2.setMovimentacoes(comprovante2);
+
+        }catch(Exception erro){
+            return 1;
         }
         
-        conta1.setSaldo(conta1.getSaldo() + saldo);
-        conta2.setSaldo(conta1.getSaldo() - saldo);
-        
-        comprovante1 = "****\nRecebido\nDia "+data+":\n De: "+remetente+"\n"+"Para:"+destino+"\nValor: "+saldo;
-        comprovante2 = "****\nEnviado\nDia "+data+":\n De: "+remetente+"\n"+"Para:"+destino+"\nValor: "+saldo;
-        
-        conta1.setMovimentacoes(comprovante1);
-        conta2.setMovimentacoes(comprovante2);
-        
-        
-        return "Transferência realizada com sucesso";
-    }
-
-    @Override
-    public int retornaSaldo(String nome) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return 0;
     }
 }

@@ -76,12 +76,12 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
     }
 
     @Override
-    public double solicitaConsulta(String nome) throws RemoteException {
+    public double solicitaConsulta(int id) throws RemoteException {
         double saldo = -1;
         try {
 
             InterfaceModelo ic = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
-            saldo = ic.retornaSaldo(nome);
+            saldo = ic.retornaSaldo(id);
 
         } catch (NotBoundException | MalformedURLException ex) {
             Logger.getLogger(ControleServer.class.getName()).log(Level.SEVERE, null, ex);
@@ -105,11 +105,11 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
     }
 
     @Override
-    public boolean autenticacao(String nome, String senha) throws RemoteException {
+    public boolean autenticacao(int id, String senha) throws RemoteException {
         try {
             boolean confere;
             InterfaceModelo ic = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
-            confere = ic.verifica(nome, senha);
+            confere = ic.verifica(id, senha);
             return confere;
         } catch (NotBoundException | MalformedURLException ex) {
             Logger.getLogger(ControleServer.class.getName()).log(Level.SEVERE, null, ex);
@@ -135,7 +135,7 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
         GregorianCalendar gc = new GregorianCalendar();
         Date dataOp = gc.getTime();
         int retorno = 0;
-        String resultado = "";
+        int resultado = 0;
 
         if (!remetente.equals(destino)) {
 
