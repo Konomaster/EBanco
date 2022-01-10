@@ -76,15 +76,15 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
     }
 
     @Override
-    public double solicitaConsulta(int id) throws RemoteException {
+    public double solicitaSaldo(int id) throws RemoteException {
         double saldo = -1;
         try {
 
             InterfaceModelo ic = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
             saldo = ic.retornaSaldo(id);
 
-        } catch (NotBoundException | MalformedURLException ex) {
-            Logger.getLogger(ControleServer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+
         }
         return saldo;
     }
@@ -118,8 +118,13 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
     }
 
     public boolean login(String id, String senha) throws RemoteException {
-        if (id.equals("1")) {
-            return true;
+
+        try {
+            InterfaceModelo ic = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
+            return ic.verifica(Integer.parseInt(id), senha);
+            
+        } catch (Exception e) {
+
         }
         return false;
 

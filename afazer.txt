@@ -8,17 +8,11 @@ Beans de Conta adicionar estrutura de dados para o log de atividades - Feito
 
 Nome da funcao de solicitarExtrato no InterfaceControle ta como "solicitaTransferencia" - Feito
 
-pendencia do ID unico
-
 verificar se tem saldo disponivel antes de fazer transferencia
 
 mudar funcao de login no controle
 
 ver se com nome igual deixa cadastrar - Feito
-
-Mudar funcao verifica (modelo) para verificar por id
-
-mudar funcao retornaSaldo (modelo) para retornar por id e retornar double (nao int)
 
 fazer extrato e listagem por nome na transferencia
 
@@ -26,4 +20,34 @@ adicionar try-catches no visao aonde chama por RMI para quando falhar nao travar
 
 mudar onde faz o bind pro metodo view accepted
 
-modelo deve armazenar os clientes logados
+implementar consultaNome (controle)
+
+no saldo e extrato falta funcao que pega id e retorna o titular
+
+na transferencia falta a busca por substring
+
+===============================
+
+retornaSaldo (modelo) retornar -1 por padrao ao inves de 0 como está
+
+(modelo) transfereSaldo erro na linha 130 ta pegando o saldo da conta 1 inves do da conta2
+
+funcao (modelo) que pega uma string e retorna uma ArrayList de string contendo o Id e o nome 
+do titular da respectivas conta que contem tal string no titular
+
+funcao consultaNome (modelo) que pega um id e retorna o nome do titular da conta com aquele id ou
+retorna a string **** caso contrario
+
+(modelo) transfereSaldo deve guardar na movimentacao (o log, o extrato) tambem o saldo de cada 
+conta apos transferencia
+
+(modelo) e se depois de fazer login a visao cair, como o modelo vai saber quais usuarios de quais
+instancias da visao cairam para deslogar (ou tirar da lista de logados)?
+
+(modelo) deve armazenar os clientes logados
+
+pendencia do ID unico (modelo)
+
+Mudar funcao verifica (modelo) para verificar por id - Feito
+
+mudar funcao retornaSaldo (modelo) para retornar por id e retornar double (nao int)

@@ -251,7 +251,7 @@ public class EbancoVisao {
                 }
                 continue;
             } else if (opcao.equals("saldo")) {
-
+                saldo(idConta);
             } else if (opcao.equals("transferencia")) {
                 transferencia(idConta);
             } else if (opcao.equals("extrato")) {
@@ -265,6 +265,14 @@ public class EbancoVisao {
 
     private void saldo(String idConta) throws Exception {
         InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
+        double saldo = ic.solicitaSaldo(Integer.parseInt(idConta));
+        String titular = ic.consultaNome(idConta);
+        System.out.println("Conta de identificador: " + idConta);
+        System.out.println("Titular: " + titular);
+        System.out.println("Saldo: " + saldo);
+        System.out.println("");
+        System.out.println("Voltando ao menu de cliente logado.");
+        System.out.println("Digite uma opcao: 'saldo', 'transferencia', 'extrato' ou 'sair'.");
     }
 
     private void extrato(String idConta) throws Exception {
@@ -282,8 +290,9 @@ public class EbancoVisao {
         } else if (opcao.equals("total")) {
             InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
             ArrayList<String> resposta = ic.solicitaExtrato(false, Integer.parseInt(idConta));
+            String titular = ic.consultaNome(idConta);
             System.out.println("Exibindo historico total de operacoes para a conta: " + idConta);
-            System.out.println("Titular: ");
+            System.out.println("Titular: "+titular);
 
             if (resposta.size() == 0) {
                 System.out.println("Ainda nao existem movimentacoes na sua conta");
@@ -292,14 +301,13 @@ public class EbancoVisao {
                     System.out.println(s);
                 }
             }
-
-            System.out.println("****\nSaldo atual: ");
 
         } else if (opcao.equals("parcial")) {
             InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
             ArrayList<String> resposta = ic.solicitaExtrato(true, Integer.parseInt(idConta));
+            String titular = ic.consultaNome(idConta);
             System.out.println("Exibindo historico parcial de operacoes para a conta: " + idConta);
-            System.out.println("Titular: ");
+            System.out.println("Titular: "+titular);
 
             if (resposta.size() == 0) {
                 System.out.println("Ainda nao existem movimentacoes na sua conta");
@@ -309,7 +317,6 @@ public class EbancoVisao {
                 }
             }
 
-            System.out.println("****\nSaldo atual: ");
         }
 
         System.out.println("Voltando ao menu de cliente logado.");
