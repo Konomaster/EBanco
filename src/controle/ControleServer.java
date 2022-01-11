@@ -51,7 +51,8 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
 
     public Conta solicitaCriacao(String nome, String senha) throws RemoteException {
 
-        Conta resultado;
+        Conta resultado = new Conta();
+        resultado.setId(-1);
         try {
             InterfaceModelo im = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
             boolean verificaConta = im.isNomeUnico(nome);//receba parametros
@@ -59,20 +60,10 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
             if (verificaConta) {
                 //digitar informações e passa-la por parametro, nome e senha - id gera depois
                 resultado = im.criarConta(nome, senha);
-                return resultado;
-            } else {
-                resultado = new Conta();
-                resultado.setId(-1);
-                //System.out.println("Esse nome já existe");
-                return resultado;
-
             }
         } catch (Exception erro) {
-            //DEBUG
-            System.out.println("ERRO: ControleServer " + erro.getMessage());
-            erro.printStackTrace();
         }
-        return null;
+        return resultado;
     }
 
     @Override
@@ -106,15 +97,15 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
 
     @Override
     public boolean autenticacao(int id, String senha) throws RemoteException {
+        boolean confere = false;
         try {
-            boolean confere;
+
             InterfaceModelo ic = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
             confere = ic.verifica(id, senha);
-            return confere;
-        } catch (NotBoundException | MalformedURLException ex) {
-            Logger.getLogger(ControleServer.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+
         }
-        return false;
+        return confere;
     }
 
     public boolean login(String id, String senha) throws RemoteException {
@@ -122,7 +113,7 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
         try {
             InterfaceModelo ic = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
             return ic.verifica(Integer.parseInt(id), senha);
-            
+
         } catch (Exception e) {
 
         }
@@ -139,8 +130,8 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
 
         GregorianCalendar gc = new GregorianCalendar();
         Date dataOp = gc.getTime();
-        int retorno = 0;
-        int resultado = 0;
+        int retorno = 1;
+        int resultado = 1;
 
         if (!remetente.equals(destino)) {
 
@@ -148,9 +139,11 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
                 InterfaceModelo im = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
 
                 resultado = im.transfereSaldo(remetente, destino, saldo, dataOp.toString());
-
+                if (resultado == 0) {
+                    retorno = 0;
+                }
             } catch (Exception e) {
-                retorno = 1;
+
             }
         }
         return retorno;

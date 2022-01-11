@@ -116,8 +116,14 @@ public class EbancoVisao {
                     System.out.println("As senhas digitadas nao sao iguais, repetindo o processo.");
                 }
 
-                InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
-                int codResult = ic.solicitaCriacao(nomeConta, senhaConta).getId();
+                int codResult = -1;
+                try {
+                    InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
+                    codResult = ic.solicitaCriacao(nomeConta, senhaConta).getId();
+                } catch (Exception e) {
+
+                }
+
                 if (codResult > -1) {
 
                     operacao = "concluido";
@@ -203,8 +209,12 @@ public class EbancoVisao {
                 continue;
             }
 
-            InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
-            boolean opResult = ic.login(idConta, senha);
+            boolean opResult = false;
+            try {
+                InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
+                opResult = ic.login(idConta, senha);
+            } catch (Exception e) {
+            }
 
             if (opResult) {
                 operacao = "concluido";
@@ -215,14 +225,22 @@ public class EbancoVisao {
 
         if (operacao.equals("concluido")) {
             ambienteLogado(idConta);
+        } else {
+            System.out.println("Falha ao fazer login, tente novamente.");
+            System.out.println("");
+            System.out.println("");
         }
         System.out.println("*****Bem vindo ao E-Banco*****");
         System.out.println("Escreva 'login' para fazer login, 'cadastro' para se cadastrar, ou 'sair' para sair.");
     }
 
     private void ambienteLogado(String idConta) throws Exception {
-        InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
-        String nomeCliente = ic.consultaNome(idConta);
+        String nomeCliente = "Erro";
+        try {
+            InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
+            nomeCliente = ic.consultaNome(idConta);
+        } catch (Exception e) {
+        }
         System.out.println("Login efetuado com sucesso.");
         System.out.println("Bem vindo: " + nomeCliente);
         System.out.println("*");
@@ -264,9 +282,15 @@ public class EbancoVisao {
     }
 
     private void saldo(String idConta) throws Exception {
-        InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
-        double saldo = ic.solicitaSaldo(Integer.parseInt(idConta));
-        String titular = ic.consultaNome(idConta);
+        double saldo = -1;
+        String titular = "Erro";
+        try {
+            InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
+            saldo = ic.solicitaSaldo(Integer.parseInt(idConta));
+            titular = ic.consultaNome(idConta);
+        } catch (Exception e) {
+
+        }
         System.out.println("Conta de identificador: " + idConta);
         System.out.println("Titular: " + titular);
         System.out.println("Saldo: " + saldo);
@@ -288,11 +312,17 @@ public class EbancoVisao {
             System.out.println("Digite uma opcao: 'saldo', 'transferencia', 'extrato' ou 'sair'.");
             return;
         } else if (opcao.equals("total")) {
-            InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
-            ArrayList<String> resposta = ic.solicitaExtrato(false, Integer.parseInt(idConta));
-            String titular = ic.consultaNome(idConta);
+            ArrayList<String> resposta = new ArrayList<String>();
+            String titular = "Erro";
+            try {
+                InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
+                resposta = ic.solicitaExtrato(false, Integer.parseInt(idConta));
+                titular = ic.consultaNome(idConta);
+            } catch (Exception e) {
+            }
+
             System.out.println("Exibindo historico total de operacoes para a conta: " + idConta);
-            System.out.println("Titular: "+titular);
+            System.out.println("Titular: " + titular);
 
             if (resposta.size() == 0) {
                 System.out.println("Ainda nao existem movimentacoes na sua conta");
@@ -303,11 +333,17 @@ public class EbancoVisao {
             }
 
         } else if (opcao.equals("parcial")) {
-            InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
-            ArrayList<String> resposta = ic.solicitaExtrato(true, Integer.parseInt(idConta));
-            String titular = ic.consultaNome(idConta);
+            ArrayList<String> resposta = new ArrayList<String>();
+            String titular = "Erro";
+            try {
+                InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
+                resposta = ic.solicitaExtrato(false, Integer.parseInt(idConta));
+                titular = ic.consultaNome(idConta);
+            } catch (Exception e) {
+            }
+
             System.out.println("Exibindo historico parcial de operacoes para a conta: " + idConta);
-            System.out.println("Titular: "+titular);
+            System.out.println("Titular: " + titular);
 
             if (resposta.size() == 0) {
                 System.out.println("Ainda nao existem movimentacoes na sua conta");
@@ -363,7 +399,13 @@ public class EbancoVisao {
         System.out.println("Agora digite a quantidade de dinheiro a ser transferida: ");
         String quantidade = teclado.nextLine();
 
-        if (!doubleValido(quantidade)) {
+        if (quantidade.equals("sair")) {
+            System.out.println("Voltando ao menu de cliente logado.");
+            System.out.println("Digite uma opcao: 'saldo', 'transferencia', 'extrato' ou 'sair'.");
+            return;
+        }
+
+        else if (!doubleValido(quantidade)) {
             System.out.println("Entrada informada nao corresponde a valor valido.");
             System.out.println("Cancelando opcao de transferencia e voltando ao menu.");
             System.out.println("Digite uma opcao: 'saldo', 'transferencia', 'extrato' ou 'sair'.");
@@ -373,8 +415,12 @@ public class EbancoVisao {
         double dblQuantidade = Double.parseDouble(quantidade);
 
         System.out.println("Efetuando transferencia...");
-        InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
-        int retornoOp = ic.transfereSaldo(contaRemetente, contaDestino, dblQuantidade);
+        int retornoOp = 1;
+        try {
+            InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
+            retornoOp = ic.transfereSaldo(contaRemetente, contaDestino, dblQuantidade);
+        } catch (Exception e) {
+        }
         if (retornoOp == 0) {
             System.out.println("Transferencia de saldo concluida com sucesso.");
             System.out.println("Voltando ao menu de cliente logado.");
@@ -404,8 +450,17 @@ public class EbancoVisao {
         }
 
         System.out.println("Resultado da busca: ");
-        InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
-        //ArrayList<String> resultado=
+        ArrayList<String> resultado = new ArrayList<String>();
+        try {
+            InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
+            resultado = new ArrayList<String>();
+        } catch (Exception e) {
+        }
+        
+        if(resultado.size()==0){
+        System.out.println("***Nao existem contas com esse titular.***");
+        }
+        
         System.out.println("Continuando com processo de transferencia...");
         return 0;
     }
