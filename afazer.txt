@@ -26,6 +26,8 @@ no saldo e extrato falta funcao que pega id e retorna o titular
 
 na transferencia falta a busca por substring
 
+(controle) mexi no solicitaCriacao,autenticacao,transfereSaldo
+
 ===============================
 
 retornaSaldo (modelo) retornar -1 por padrao ao inves de 0 como está
