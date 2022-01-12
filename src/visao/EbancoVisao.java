@@ -412,7 +412,7 @@ public class EbancoVisao {
             return;
         }
 
-        double dblQuantidade = Double.parseDouble(quantidade);
+        int dblQuantidade = Integer.parseInt(quantidade);
 
         System.out.println("Efetuando transferencia...");
         int retornoOp = 1;

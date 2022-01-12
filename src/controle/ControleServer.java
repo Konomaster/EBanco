@@ -122,11 +122,23 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
     }
 
     public String consultaNome(String id) throws RemoteException {
-        return "Teste";
+        String nome = "";
+        try {
+            InterfaceModelo im = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
+            int resultado = Integer.parseInt(id);
+            nome = im.retornaNome(resultado);
+            
+            if(nome.equals("****")){
+                return "Usuário não encontrado";
+            }
+        } catch (Exception ex) {
+        
+        }
+        return "Essa conta pertence ao usuario"+ nome;
 
     }
 
-    public int transfereSaldo(String remetente, String destino, double saldo) throws RemoteException {
+    public int transfereSaldo(String remetente, String destino, int saldo) throws RemoteException {
 
         GregorianCalendar gc = new GregorianCalendar();
         Date dataOp = gc.getTime();

@@ -30,26 +30,29 @@ na transferencia falta a busca por substring
 
 ===============================
 
-retornaSaldo (modelo) retornar -1 por padrao ao inves de 0 como está
+	Mudar funcao verifica (modelo) para verificar por id - Feito
 
-(modelo) transfereSaldo erro na linha 130 ta pegando o saldo da conta 1 inves do da conta2
+	retornaSaldo (modelo) retornar -1 por padrao ao inves de 0 como está - feito
 
-funcao (modelo) que pega uma string e retorna uma ArrayList de string contendo o Id e o nome 
-do titular da respectivas conta que contem tal string no titular
+	(modelo) transfereSaldo erro na linha 130 ta pegando o saldo da conta 1 inves do da conta2 - feito
 
-funcao consultaNome (modelo) que pega um id e retorna o nome do titular da conta com aquele id ou
-retorna a string **** caso contrario
+	funcao consultaNome (modelo) que pega um id e retorna o nome do titular da conta com aquele id ou
+	retorna a string **** caso contrario - feito
 
-(modelo) transfereSaldo deve guardar na movimentacao (o log, o extrato) tambem o saldo de cada 
-conta apos transferencia
+	mudar funcao retornaSaldo (modelo) para retornar por id e retornar double (nao int) - feito
+
+	funcao (modelo) que pega uma string e retorna uma ArrayList de string contendo o Id e o nome 
+	do titular da respectivas conta que contem tal string no titular - feito
+
+	(modelo) transfereSaldo deve guardar na movimentacao (o log, o extrato) tambem o saldo de cada 
+	conta apos transferencia - feito
+
+	pendencia do ID unico (modelo) - já tá feito não ? cada id é unico pois corresponde a posição no vetor
 
 (modelo) e se depois de fazer login a visao cair, como o modelo vai saber quais usuarios de quais
 instancias da visao cairam para deslogar (ou tirar da lista de logados)?
 
 (modelo) deve armazenar os clientes logados
 
-pendencia do ID unico (modelo)
 
-Mudar funcao verifica (modelo) para verificar por id - Feito
 
-mudar funcao retornaSaldo (modelo) para retornar por id e retornar double (nao int)

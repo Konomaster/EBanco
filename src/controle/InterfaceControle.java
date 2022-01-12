@@ -24,6 +24,6 @@ public interface InterfaceControle extends Remote {
     //aqui que pega a hora e faz o log da transferencia para ela poder ser consultada por extrato
     //tem que fazer com que o log na conta remetente e destino seja atualizado para a transferencia
     //antes de qualquer outra operacao ser feita
-    public int transfereSaldo(String remetente ,String destino, double quantidade) throws RemoteException;
+    public int transfereSaldo(String remetente ,String destino, int quantidade) throws RemoteException;
     public String montante() throws RemoteException;
 }

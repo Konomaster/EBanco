@@ -12,7 +12,7 @@ public class Conta implements Serializable {
     String nome;
     int id;
     String senha;
-    double saldo = 0;
+    int saldo = 0;
     ArrayList<String> movimentacoes = new ArrayList<String>();
 
     public Conta(String nome, String senha) {
@@ -50,11 +50,11 @@ public class Conta implements Serializable {
         this.senha = senha;
     }
 
-    public double getSaldo() {
+    public int getSaldo() {
         return saldo;
     }
 
-    public void setSaldo(double saldo) {
+    public void setSaldo(int saldo) {
         this.saldo = saldo;
     }
 

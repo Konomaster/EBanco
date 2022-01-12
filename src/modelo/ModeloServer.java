@@ -73,9 +73,9 @@ public class ModeloServer extends UnicastRemoteObject implements InterfaceModelo
         }
     }
 
-    public double retornaSaldo(int id) throws RemoteException {
+    public int retornaSaldo(int id) throws RemoteException {
         
-        double saldo = 0;
+        int saldo = -1;
         
         for(int i = 0; i < contadao.lista.size(); i++){
             if(contadao.lista.get(i).getId() == id){
@@ -104,7 +104,7 @@ public class ModeloServer extends UnicastRemoteObject implements InterfaceModelo
         return retorno;
     }
     
-    public int transfereSaldo(String remetente, String destino, double saldo, String data) throws RemoteException{
+    public int transfereSaldo(String remetente, String destino, int saldo, String data) throws RemoteException{
         
     // Transferir dinheiro, e guardar String de movimentação em ambas as contas
         
@@ -127,10 +127,10 @@ public class ModeloServer extends UnicastRemoteObject implements InterfaceModelo
             }
 
             conta1.setSaldo(conta1.getSaldo() + saldo);
-            conta2.setSaldo(conta1.getSaldo() - saldo);
+            conta2.setSaldo(conta2.getSaldo() - saldo);
 
-            comprovante1 = "****\nRecebido\nDia "+data+":\n De: "+remetente+"\n"+"Para:"+destino+"\nValor: "+saldo;
-            comprovante2 = "****\nEnviado\nDia "+data+":\n De: "+remetente+"\n"+"Para:"+destino+"\nValor: "+saldo;
+            comprovante1 = "****ID: "+conta1.getId()+"\nRecebido\nDia "+data+":\n De: "+remetente+"\n"+"Para:"+destino+"\nValor recebido: "+saldo+"\nSaldo atual: "+conta1.getSaldo();
+            comprovante2 = "****ID: "+conta2.getId()+"\nEnviado\nDia "+data+":\n De: "+remetente+"\n"+"Para:"+destino+"\nValor transferido: "+saldo+"\nSaldo atual: "+conta2.getSaldo();
 
             conta1.setMovimentacoes(comprovante1);
             conta2.setMovimentacoes(comprovante2);
@@ -141,4 +141,31 @@ public class ModeloServer extends UnicastRemoteObject implements InterfaceModelo
         
         return 0;
     }
+    
+    public String retornaNome(int id) throws RemoteException{
+           
+        String resultado = "****";
+        
+        for(int j = 0; j < contadao.lista.size(); j++){
+
+            if(contadao.lista.get(j).getId() == id){
+                resultado = contadao.lista.get(j).getNome();
+            }
+        }
+        return resultado;
+    }
+    
+    public ArrayList<String> retornaExtratoPorNome(String nome)throws RemoteException{
+         
+        ArrayList<String> resultado = new ArrayList<String>();
+        
+         for(int j = 0; j < contadao.lista.size(); j++){
+
+            if(contadao.lista.get(j).getNome().equals(nome)){
+                resultado = contadao.lista.get(j).getMovimentacoes(true,j);
+            }
+        }
+         return resultado;
+    }
+
 }
