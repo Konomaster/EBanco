@@ -60,6 +60,8 @@ instancias da visao cairam para deslogar (ou tirar da lista de logados)?
 
 (modelo) se um cliente ja logado logar de novo nao adicionar nova entrada em clientelogado
 
+(modelo) mesmo se cliente nao existir na lista de logados deixar ele deslogar (metodo logout)
+
 (modelo) criarConta dentro de try catch se entrar no catch retorna uma conta com id -1
 
 (modelo) mudar funcao retornaExtratoPorNome (vai fazer toLowerCase mas nao vai retornar com
