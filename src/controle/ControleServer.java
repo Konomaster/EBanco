@@ -113,7 +113,7 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
         try {
             InterfaceModelo ic = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
             return ic.verifica(Integer.parseInt(id), senha);
-
+            //Salvar como: Arraylist de String de logged users
         } catch (Exception e) {
 
         }
@@ -164,11 +164,13 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
     //quando tiver jgroups tem que retornar o montante visto por todos os membros
     //do cluster de modelo
     public String montante() throws RemoteException {
+        
+        //Numero de contas e valor total da soma delas
         String retorno = "";
         try {
             InterfaceModelo im = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
 
-            //retorno= im.montante();
+            retorno = im.montante();
         } catch (Exception e) {
 
         }

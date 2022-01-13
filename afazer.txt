@@ -47,12 +47,14 @@ na transferencia falta a busca por substring
 	(modelo) transfereSaldo deve guardar na movimentacao (o log, o extrato) tambem o saldo de cada 
 	conta apos transferencia - feito
 
-	pendencia do ID unico (modelo) - já tá feito não ? cada id é unico pois corresponde a posição no vetor
+	(modelo) deve armazenar os clientes logados - feito
+
+	valor montando de dinheiro do banco - feito
+
+	deslogar usuario - feito
+
+pendencia do ID unico (modelo) - já tá feito não ? gerar id pelo jgroups
 
 (modelo) e se depois de fazer login a visao cair, como o modelo vai saber quais usuarios de quais
 instancias da visao cairam para deslogar (ou tirar da lista de logados)?
-
-(modelo) deve armazenar os clientes logados
-
-
 

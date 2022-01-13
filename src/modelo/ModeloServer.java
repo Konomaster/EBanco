@@ -19,6 +19,7 @@ public class ModeloServer extends UnicastRemoteObject implements InterfaceModelo
 
     private EbancoModelo ebancomodelo;
     private ContaDAO contadao;
+    private ArrayList<String> logados = new ArrayList<String>();
     
     public ModeloServer() throws RemoteException{
         super();
@@ -89,6 +90,7 @@ public class ModeloServer extends UnicastRemoteObject implements InterfaceModelo
     public boolean verifica(int id, String senha) throws RemoteException {
         for(int i = 0; i < contadao.lista.size(); i++){
             if(contadao.lista.get(i).getId() == id && contadao.lista.get(i).getSenha().equals(senha)){
+                salvaLogado(contadao.lista.get(i).getId());
                return true;
             }
         }
@@ -125,15 +127,19 @@ public class ModeloServer extends UnicastRemoteObject implements InterfaceModelo
                     }
                 }
             }
+            
+            if(conta2.getSaldo() >= saldo){
+                conta1.setSaldo(conta1.getSaldo() + saldo);
+                conta2.setSaldo(conta2.getSaldo() - saldo);
 
-            conta1.setSaldo(conta1.getSaldo() + saldo);
-            conta2.setSaldo(conta2.getSaldo() - saldo);
+                comprovante1 = "****ID: "+conta1.getId()+"\nRecebido\nDia "+data+":\n De: "+remetente+"\n"+"Para:"+destino+"\nValor recebido: "+saldo+"\nSaldo atual: "+conta1.getSaldo();
+                comprovante2 = "****ID: "+conta2.getId()+"\nEnviado\nDia "+data+":\n De: "+remetente+"\n"+"Para:"+destino+"\nValor transferido: "+saldo+"\nSaldo atual: "+conta2.getSaldo();
 
-            comprovante1 = "****ID: "+conta1.getId()+"\nRecebido\nDia "+data+":\n De: "+remetente+"\n"+"Para:"+destino+"\nValor recebido: "+saldo+"\nSaldo atual: "+conta1.getSaldo();
-            comprovante2 = "****ID: "+conta2.getId()+"\nEnviado\nDia "+data+":\n De: "+remetente+"\n"+"Para:"+destino+"\nValor transferido: "+saldo+"\nSaldo atual: "+conta2.getSaldo();
-
-            conta1.setMovimentacoes(comprovante1);
-            conta2.setMovimentacoes(comprovante2);
+                conta1.setMovimentacoes(comprovante1);
+                conta2.setMovimentacoes(comprovante2);
+            }else{
+                return 1;
+            }
 
         }catch(Exception erro){
             return 1;
@@ -159,13 +165,51 @@ public class ModeloServer extends UnicastRemoteObject implements InterfaceModelo
          
         ArrayList<String> resultado = new ArrayList<String>();
         
-         for(int j = 0; j < contadao.lista.size(); j++){
+        for(int j = 0; j < contadao.lista.size(); j++){
 
             if(contadao.lista.get(j).getNome().equals(nome)){
                 resultado = contadao.lista.get(j).getMovimentacoes(true,j);
             }
         }
-         return resultado;
+        return resultado;
+    }
+    
+    public void salvaLogado(int id){
+        logados.add(String.valueOf(id));
+    }
+    
+    public String montante(){
+        int numContas = 0;
+        int somatorio = 0;        
+        try{
+         
+            for(int i = 0; i < contadao.lista.size(); i++){
+                numContas += 1;
+                somatorio += contadao.lista.get(i).getSaldo();
+            }
+        }catch(Exception e){
+            return "Erro";
+        }
+        
+        return "São "+numContas+" com o valor total de "+somatorio;
+    }
+    
+    public int logout(int id) throws RemoteException{
+        
+        int retorno = 1;
+        
+        try{
+            for(int i = 0; i < logados.size(); i++){
+                if(logados.get(i).equals(String.valueOf(id))){
+                    logados.remove(i);
+                    retorno = 0;
+                }
+            }
+        }catch(Exception e){
+            
+        }
+        
+        return retorno;
     }
 
 }

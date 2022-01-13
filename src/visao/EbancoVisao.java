@@ -267,6 +267,7 @@ public class EbancoVisao {
                     opcao = "";
                     System.out.println("Logout cancelado.");
                 }
+                //
                 continue;
             } else if (opcao.equals("saldo")) {
                 saldo(idConta);
