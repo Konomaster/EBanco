@@ -8,25 +8,21 @@ Beans de Conta adicionar estrutura de dados para o log de atividades - Feito
 
 Nome da funcao de solicitarExtrato no InterfaceControle ta como "solicitaTransferencia" - Feito
 
-verificar se tem saldo disponivel antes de fazer transferencia
+verificar se tem saldo disponivel antes de fazer transferencia - Feito
 
-mudar funcao de login no controle
+mudar funcao de login no controle - Feito
 
 ver se com nome igual deixa cadastrar - Feito
 
 fazer extrato e listagem por nome na transferencia
 
-adicionar try-catches no visao aonde chama por RMI para quando falhar nao travar tudo
+adicionar try-catches no visao aonde chama por RMI para quando falhar nao travar tudo - Feito
 
 mudar onde faz o bind pro metodo view accepted
 
-implementar consultaNome (controle)
-
-no saldo e extrato falta funcao que pega id e retorna o titular
+implementar consultaNome (controle) - Feito
 
 na transferencia falta a busca por substring
-
-(controle) mexi no solicitaCriacao,autenticacao,transfereSaldo
 
 ===============================
 
@@ -57,4 +53,21 @@ pendencia do ID unico (modelo) - já tá feito não ? gerar id pelo jgroups
 
 (modelo) e se depois de fazer login a visao cair, como o modelo vai saber quais usuarios de quais
 instancias da visao cairam para deslogar (ou tirar da lista de logados)?
+
+(modelo) retornaSaldo ta retornando int e nao double
+
+(modelo) transfereSaldo adicionar \n depois dos **** no extrato
+
+(modelo) se um cliente ja logado logar de novo nao adicionar nova entrada em clientelogado
+
+(modelo) criarConta dentro de try catch se entrar no catch retorna uma conta com id -1
+
+(modelo) mudar funcao retornaExtratoPorNome (vai fazer toLowerCase mas nao vai retornar com
+lowerCase)
+
+(modelo) o saldo do BEAN Conta esta como int, fazer essa alteracao e mudar onde necessario
+
+
+
+
 

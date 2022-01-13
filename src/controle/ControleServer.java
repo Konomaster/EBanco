@@ -49,21 +49,20 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
         }
     }
 
-    public Conta solicitaCriacao(String nome, String senha) throws RemoteException {
+    public String solicitaCriacao(String nome, String senha) throws RemoteException {
 
-        Conta resultado = new Conta();
-        resultado.setId(-1);
+        String retorno = "-1";
         try {
             InterfaceModelo im = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
             boolean verificaConta = im.isNomeUnico(nome);//receba parametros
 
             if (verificaConta) {
                 //digitar informações e passa-la por parametro, nome e senha - id gera depois
-                resultado = im.criarConta(nome, senha);
+                retorno = im.criarConta(nome, senha).getId() + "";
             }
         } catch (Exception erro) {
         }
-        return resultado;
+        return retorno;
     }
 
     @Override
@@ -121,20 +120,36 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
 
     }
 
+    public boolean logout(String id) throws RemoteException {
+        boolean retorno = false;
+
+        try {
+            InterfaceModelo ic = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
+            int result = ic.logout(Integer.parseInt(id));
+
+            if (result == 0) {
+                retorno = true;
+            }
+        } catch (Exception e) {
+        }
+        return retorno;
+
+    }
+
     public String consultaNome(String id) throws RemoteException {
-        String nome = "";
+        String nome = "Erro";
         try {
             InterfaceModelo im = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
             int resultado = Integer.parseInt(id);
             nome = im.retornaNome(resultado);
-            
-            if(nome.equals("****")){
-                return "Usuário não encontrado";
+
+            if (nome.equals("****")) {
+                nome = "Erro";
             }
         } catch (Exception ex) {
-        
+
         }
-        return "Essa conta pertence ao usuario"+ nome;
+        return nome;
 
     }
 
@@ -164,7 +179,7 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
     //quando tiver jgroups tem que retornar o montante visto por todos os membros
     //do cluster de modelo
     public String montante() throws RemoteException {
-        
+
         //Numero de contas e valor total da soma delas
         String retorno = "";
         try {

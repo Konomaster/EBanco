@@ -56,7 +56,17 @@ public class EbancoVisao {
             } else if (line.startsWith("cadastro")) {
                 cadastro();
             } else if (line.startsWith("montante")) {
+                String retorno = "Erro ao imprimir montante";
+                try {
+                    InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
+                    retorno = ic.montante();
+                } catch (Exception e) {
 
+                }
+                System.out.println(retorno);
+                System.out.println("");
+                System.out.println("*****Bem vindo ao E-Banco*****");
+                System.out.println("Escreva 'login' para fazer login, 'cadastro' para se cadastrar, ou 'sair' para sair.");
             } else {
                 System.out.println("Digite uma opcao válida ('login' ou 'cadastro' ou 'sair').");
             }
@@ -74,11 +84,11 @@ public class EbancoVisao {
 
         while (!operacao.equals("sair") && !operacao.equals("concluido") && !operacao.equals("falha")) {
             System.out.println("Por gentileza, insira seu nome: ");
-            String nomeConta = teclado.nextLine().toLowerCase();
+            String nomeConta = teclado.nextLine();
             String senhaConta = "";
             String senhaContaConfirmar = " ";
 
-            if (nomeConta.equals("sair")) {
+            if (nomeConta.toLowerCase().equals("sair")) {
                 System.out.println("*****Bem vindo ao E-Banco*****");
                 System.out.println("Escreva 'login' para fazer login, 'cadastro' para se cadastrar, ou 'sair' para sair.");
                 operacao = "sair";
@@ -116,24 +126,24 @@ public class EbancoVisao {
                     System.out.println("As senhas digitadas nao sao iguais, repetindo o processo.");
                 }
 
-                int codResult = -1;
+                String codResult = "-1";
                 try {
                     InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
-                    codResult = ic.solicitaCriacao(nomeConta, senhaConta).getId();
+                    codResult = ic.solicitaCriacao(nomeConta, senhaConta);
                 } catch (Exception e) {
 
                 }
 
-                if (codResult > -1) {
+                if (!codResult.equals("-1")) {
 
                     operacao = "concluido";
-                    idConta = String.valueOf(codResult);
+                    idConta = codResult;
                 } else {
                     operacao = "falha";
                 }
             }
 
-            if (nomeConta.equals("sair")) {
+            if (nomeConta.toLowerCase().equals("sair")) {
                 System.out.println("*****Bem vindo ao E-Banco*****");
                 System.out.println("Escreva 'login' para fazer login, 'cadastro' para se cadastrar, ou 'sair' para sair.");
                 operacao = "sair";
@@ -156,14 +166,14 @@ public class EbancoVisao {
             System.out.println("Faca login utilizando o id da sua conta e a senha que voce definiu neste cadastro.");
             System.out.println("Retornando ao menu inicial.");
             System.out.println("");
-            System.out.println("*****Bem vindo ao E-Banco_CONTROLE*****");
+            System.out.println("*****Bem vindo ao E-Banco*****");
             System.out.println("Escreva 'login' para fazer login, 'cadastro' para se cadastrar, ou 'sair' para sair.");
 
         } else {
             System.out.println("Cadastro nao pode ser executado com sucesso.");
             System.out.println("Retornando ao menu inicial.");
             System.out.println("");
-            System.out.println("*****Bem vindo ao E-Banco_CONTROLE*****");
+            System.out.println("*****Bem vindo ao E-Banco*****");
             System.out.println("Escreva 'login' para fazer login, 'cadastro' para se cadastrar, ou 'sair' para sair.");
 
         }
@@ -266,9 +276,26 @@ public class EbancoVisao {
                 if (!teclado.nextLine().toLowerCase().equals("sim")) {
                     opcao = "";
                     System.out.println("Logout cancelado.");
-                }
+                    System.out.println("");
+                    System.out.println("Digite uma opcao: 'saldo', 'transferencia', 'extrato' ou 'sair'.");
+                } else {
                 //
-                continue;
+
+                    boolean retorno = false;
+                    try {
+                        InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
+                        retorno = ic.logout(idConta);
+                    } catch (Exception e) {
+
+                    }
+
+                    if (!retorno) {
+                        opcao = "";
+                        System.out.println("Nao foi possivel fazer logout, tente novamente!");
+                        System.out.println("");
+                        System.out.println("Digite uma opcao: 'saldo', 'transferencia', 'extrato' ou 'sair'.");
+                    }
+                }
             } else if (opcao.equals("saldo")) {
                 saldo(idConta);
             } else if (opcao.equals("transferencia")) {
@@ -292,7 +319,7 @@ public class EbancoVisao {
         } catch (Exception e) {
 
         }
-        System.out.println("Conta de identificador: " + idConta);
+        System.out.println("Identificador da conta: " + idConta);
         System.out.println("Titular: " + titular);
         System.out.println("Saldo: " + saldo);
         System.out.println("");
@@ -404,9 +431,7 @@ public class EbancoVisao {
             System.out.println("Voltando ao menu de cliente logado.");
             System.out.println("Digite uma opcao: 'saldo', 'transferencia', 'extrato' ou 'sair'.");
             return;
-        }
-
-        else if (!doubleValido(quantidade)) {
+        } else if (!doubleValido(quantidade)) {
             System.out.println("Entrada informada nao corresponde a valor valido.");
             System.out.println("Cancelando opcao de transferencia e voltando ao menu.");
             System.out.println("Digite uma opcao: 'saldo', 'transferencia', 'extrato' ou 'sair'.");
@@ -457,11 +482,11 @@ public class EbancoVisao {
             resultado = new ArrayList<String>();
         } catch (Exception e) {
         }
-        
-        if(resultado.size()==0){
-        System.out.println("***Nao existem contas com esse titular.***");
+
+        if (resultado.size() == 0) {
+            System.out.println("***Nao existem contas com esse titular.***");
         }
-        
+
         System.out.println("Continuando com processo de transferencia...");
         return 0;
     }
