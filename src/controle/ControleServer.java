@@ -19,15 +19,6 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
         super();
     }
 
-//    public static void main(String[] args){
-//        ControleServer newControle;
-//        try {
-//            newControle = new ControleServer();
-//            newControle.iniciar();
-//        } catch (RemoteException ex) {
-//            Logger.getLogger(ControleServer.class.getName()).log(Level.SEVERE, null, ex);
-//        }  
-//    }
     public void iniciar() {
         try {
             // Cria um objeto do tipo da classe CalculadoraServer. 

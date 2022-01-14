@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package modelo;
 
 import java.rmi.Naming;
@@ -12,9 +7,6 @@ import java.util.ArrayList;
 import modelo.Beans.Conta;
 import modelo.DAO.ContaDAO;
 
-/*
- * @author Pedro Souza
- */
 public class ModeloServer extends UnicastRemoteObject implements InterfaceModelo {
 
     private EbancoModelo ebancomodelo;
@@ -26,15 +18,6 @@ public class ModeloServer extends UnicastRemoteObject implements InterfaceModelo
         contadao = new ContaDAO();
     }
 
-//    public static void main(String[] args){
-//        ModeloServer newModelo;
-//        try {
-//            newModelo = new ModeloServer();
-//            newModelo.iniciar();
-//        } catch (RemoteException ex) {
-//            Logger.getLogger(ControleServer.class.getName()).log(Level.SEVERE, null, ex);
-//        }  
-//    }
     public void iniciar() {
 
         try {
@@ -223,5 +206,4 @@ public class ModeloServer extends UnicastRemoteObject implements InterfaceModelo
 
         return retorno;
     }
-
 }

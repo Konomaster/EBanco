@@ -7,12 +7,15 @@ package modelo;
 
 import java.rmi.RemoteException;
 import org.jgroups.Address;
+import org.jgroups.Channel;
 import org.jgroups.JChannel;
 import org.jgroups.Message;
 import org.jgroups.ReceiverAdapter;
 import org.jgroups.View;
 import org.jgroups.blocks.MessageDispatcher;
 import org.jgroups.blocks.RequestHandler;
+import org.jgroups.blocks.atomic.Counter;
+import org.jgroups.blocks.atomic.CounterService;
 
 /**
  *
@@ -32,6 +35,8 @@ public class EbancoModelo extends ReceiverAdapter implements RequestHandler{
     
     private void start() throws Exception {
         canal = new JChannel();
+        
+        
         //canal.setReceiver(this);
         despachante = new MessageDispatcher(canal, null, null, this);
         
