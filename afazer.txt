@@ -54,20 +54,20 @@ pendencia do ID unico (modelo) - já tá feito não ? gerar id pelo jgroups
 (modelo) e se depois de fazer login a visao cair, como o modelo vai saber quais usuarios de quais
 instancias da visao cairam para deslogar (ou tirar da lista de logados)?
 
-(modelo) retornaSaldo ta retornando int e nao double
+	(modelo) retornaSaldo ta retornando int e nao double - feito
 
-(modelo) transfereSaldo adicionar \n depois dos **** no extrato
+	(modelo) transfereSaldo adicionar \n depois dos **** no extrato - feito
 
-(modelo) se um cliente ja logado logar de novo nao adicionar nova entrada em clientelogado
+	(modelo) se um cliente ja logado logar de novo nao adicionar nova entrada em clientelogado - feito
 
-(modelo) mesmo se cliente nao existir na lista de logados deixar ele deslogar (metodo logout)
+	(modelo) mesmo se cliente nao existir na lista de logados deixar ele deslogar (metodo logout) - feito
 
-(modelo) criarConta dentro de try catch se entrar no catch retorna uma conta com id -1
+	(modelo) criarConta dentro de try catch se entrar no catch retorna uma conta com id -1 - feito
 
-(modelo) mudar funcao retornaExtratoPorNome (vai fazer toLowerCase mas nao vai retornar com
-lowerCase)
+	(modelo) mudar funcao retornaExtratoPorNome (vai fazer toLowerCase mas nao vai retornar com
+	lowerCase) - feito
 
-(modelo) o saldo do BEAN Conta esta como int, fazer essa alteracao e mudar onde necessario
+	(modelo) o saldo do BEAN Conta esta como int, fazer essa alteracao e mudar onde necessario - feito
 
 
 
