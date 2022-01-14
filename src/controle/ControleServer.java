@@ -153,7 +153,7 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
 
     }
 
-    public int transfereSaldo(String remetente, String destino, int saldo) throws RemoteException {
+    public int transfereSaldo(String remetente, String destino, double saldo) throws RemoteException {
 
         GregorianCalendar gc = new GregorianCalendar();
         Date dataOp = gc.getTime();
@@ -188,6 +188,17 @@ public class ControleServer extends UnicastRemoteObject implements InterfaceCont
             retorno = im.montante();
         } catch (Exception e) {
 
+        }
+        return retorno;
+    }
+
+    public ArrayList<String> buscaContaPorNome(String nome) throws RemoteException {
+        ArrayList<String> retorno = new ArrayList<String>();
+
+        try {
+            InterfaceModelo im = (InterfaceModelo) Naming.lookup("rmi://localhost/ServerModelo");
+            retorno = im.buscaContaPorNome(nome);
+        } catch (Exception e) {
         }
         return retorno;
     }

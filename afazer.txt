@@ -22,7 +22,7 @@ mudar onde faz o bind pro metodo view accepted
 
 implementar consultaNome (controle) - Feito
 
-na transferencia falta a busca por substring
+na transferencia falta a busca por substring - Feito
 
 ===============================
 
@@ -68,6 +68,10 @@ instancias da visao cairam para deslogar (ou tirar da lista de logados)?
 	lowerCase) - feito
 
 	(modelo) o saldo do BEAN Conta esta como int, fazer essa alteracao e mudar onde necessario - feito
+
+	(modelo) montante - Feito
+
+	(modelo) transfereSaldo - Feito
 
 
 

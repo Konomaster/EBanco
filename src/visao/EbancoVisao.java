@@ -438,7 +438,7 @@ public class EbancoVisao {
             return;
         }
 
-        int dblQuantidade = Integer.parseInt(quantidade);
+        double dblQuantidade = Double.parseDouble(quantidade);
 
         System.out.println("Efetuando transferencia...");
         int retornoOp = 1;
@@ -479,12 +479,16 @@ public class EbancoVisao {
         ArrayList<String> resultado = new ArrayList<String>();
         try {
             InterfaceControle ic = (InterfaceControle) Naming.lookup("rmi://localhost/ServerControle");
-            resultado = new ArrayList<String>();
+            resultado = ic.buscaContaPorNome(stringdebusca);
         } catch (Exception e) {
         }
 
         if (resultado.size() == 0) {
             System.out.println("***Nao existem contas com esse titular.***");
+        }else{
+            for (String s: resultado){
+                System.out.println(s);
+            }
         }
 
         System.out.println("Continuando com processo de transferencia...");

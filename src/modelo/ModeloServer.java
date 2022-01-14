@@ -110,7 +110,7 @@ public class ModeloServer extends UnicastRemoteObject implements InterfaceModelo
         return retorno;
     }
 
-    public int transfereSaldo(String remetente, String destino, int saldo, String data) throws RemoteException {
+    public int transfereSaldo(String remetente, String destino, double saldo, String data) throws RemoteException {
 
         // Transferir dinheiro, e guardar String de movimentação em ambas as contas
         try {
@@ -169,7 +169,7 @@ public class ModeloServer extends UnicastRemoteObject implements InterfaceModelo
         try {
             for (int j = 0; j < contadao.lista.size(); j++) {
 
-                if (contadao.lista.get(j).getNome().contains(nome)) {
+                if (contadao.lista.get(j).getNome().toLowerCase().contains(nome)) {
                     resultado.add("Identificador: " + contadao.lista.get(j).getId() + " Titular: " + contadao.lista.get(j).getNome());
                 }
             }
@@ -192,7 +192,7 @@ public class ModeloServer extends UnicastRemoteObject implements InterfaceModelo
 
     public String montante() {
         int numContas = 0;
-        int somatorio = 0;
+        double somatorio = 0;
         try {
 
             for (int i = 0; i < contadao.lista.size(); i++) {
