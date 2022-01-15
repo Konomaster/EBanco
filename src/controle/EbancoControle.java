@@ -34,12 +34,8 @@ public class EbancoControle extends ReceiverAdapter implements RequestHandler{
         canal.close();
     }
     
-    private void eventLoop() throws RemoteException{
-        Address meuEndereco = canal.getAddress();
-        if(meuEndereco.equals(canal.getView().getMembers().get(0))){
-            ControleServer c = new ControleServer();
-            c.iniciar();
-        }
+    private void eventLoop() {
+        
     }
   
     public void receive(Message msg) {
@@ -47,7 +43,17 @@ public class EbancoControle extends ReceiverAdapter implements RequestHandler{
     }
     
     public void viewAccepted(View new_view) {
-        System.out.println("\t\t[DEBUG] ** view: " + new_view);
+        
+        try{
+            Address meuEndereco = canal.getAddress();
+            if(meuEndereco.equals(canal.getView().getMembers().get(0))){
+                ControleServer c = new ControleServer();
+                c.iniciar();
+            }
+        }catch(Exception e){
+            
+        }
+        
     }
 
     @Override
